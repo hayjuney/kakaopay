@@ -13,11 +13,11 @@ WITH paid AS (
 	WHERE payment_action_type = 'CANCELLED' AND transacted_at < '2020-03-01'
 ), temp AS (
 	SELECT paid.user_id AS user_id,
-		   SUM(paid.amount) AS paid_sum,
-		   SUM(cancelled.amount) AS cancelled_sum
+	       SUM(paid.amount) AS paid_sum,
+	       SUM(cancelled.amount) AS cancelled_sum
 	  FROM paid
- LEFT JOIN cancelled ON cancelled.transaction_id = paid.transaction_id
-  GROUP BY 1
+     LEFT JOIN cancelled ON cancelled.transaction_id = paid.transaction_id
+      GROUP BY 1
 )
 	SELECT user_id FROM temp
 	WHERE paid_sum - cancelled_sum >= 10000
